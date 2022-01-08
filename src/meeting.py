@@ -11,9 +11,11 @@ async def find_next_event_and_notify_core_team(client: discord.Client):
     next_meeting = get_next_meeting()
 
     if not next_meeting:
+        print("No next meeting found")
         return
 
-    if (next_meeting.begin - arrow.now()).days > 7:
+    if (next_meeting.begin - arrow.now()).days > 3:
+        print("Next meeting is more than 3 days away")
         return
 
     event_date = next_meeting.begin.isoformat()
