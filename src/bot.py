@@ -59,9 +59,12 @@ class StrawberryDiscordClient(discord.Client):
 
     async def check_events_for_next_week(self):
         await self.wait_until_ready()
+        print("Bot is ready!")
 
         while not self.is_closed():
+            print("Checking for events...")
             await find_next_event_and_notify_core_team(self)
+            print("Sleeping for 60 seconds...")
             await asyncio.sleep(60)
 
 
