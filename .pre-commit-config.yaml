@@ -17,7 +17,7 @@ repos:
     rev: "v0.930"
     hooks:
       - id: mypy
-        additional_dependencies: [types-python-dateutil]
+        additional_dependencies: [types-all]
         args: [--python-version=3.10]
 
   - repo: https://github.com/PyCQA/flake8
