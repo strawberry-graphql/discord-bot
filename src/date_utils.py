@@ -1,5 +1,5 @@
 import arrow
-import discord
+import nextcord
 
 LOCATIONS = {
     "🇬🇧 London": "Europe/London",
@@ -8,7 +8,7 @@ LOCATIONS = {
 }
 
 
-def add_localized_times_to_embed(embed: discord.Embed, date: arrow.Arrow) -> None:
+def add_localized_times_to_embed(embed: nextcord.Embed, date: arrow.Arrow) -> None:
     for location, timezone in LOCATIONS.items():
         embed.add_field(
             name=location,

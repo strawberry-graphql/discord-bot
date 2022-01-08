@@ -1,5 +1,5 @@
 import arrow
-import discord
+import nextcord
 
 from .calendar import get_next_meeting
 from .config import CORE_DEVS_CHANNEL_ID, NOTES_LINK
@@ -7,7 +7,7 @@ from .database import add_notification_for_date, get_notification_for_date
 from .date_utils import add_localized_times_to_embed
 
 
-async def find_next_event_and_notify_core_team(client: discord.Client):
+async def find_next_event_and_notify_core_team(client: nextcord.Client):
     next_meeting = get_next_meeting()
 
     if not next_meeting:
@@ -24,9 +24,9 @@ async def find_next_event_and_notify_core_team(client: discord.Client):
     if not notification:
         channel = client.get_channel(CORE_DEVS_CHANNEL_ID)
 
-        assert channel
+        assert isinstance(channel, nextcord.channel.TextChannel)
 
-        embed = discord.Embed(color=5814783)
+        embed = nextcord.Embed(color=5814783)
         add_localized_times_to_embed(embed, next_meeting.begin)
 
         message = await channel.send(

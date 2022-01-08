@@ -23,7 +23,7 @@ cursor.execute(SCHEMA)
 
 class Notification(NamedTuple):
     date: arrow.Arrow
-    discord_message_id: str
+    discord_message_id: int
 
 
 def get_notification_for_date(date: str, notification_type: str) -> Notification | None:
@@ -38,13 +38,13 @@ def get_notification_for_date(date: str, notification_type: str) -> Notification
     if row:
         date, message_id = row
 
-        return Notification(date=arrow.get(date), discord_message_id=message_id)
+        return Notification(date=arrow.get(date), discord_message_id=int(message_id))
 
     return None
 
 
 def add_notification_for_date(
-    date: str, discord_message_id: str, notification_type: str
+    date: str, discord_message_id: int, notification_type: str
 ) -> None:
     cursor.execute(
         "INSERT INTO meeting_notifications "
@@ -69,6 +69,6 @@ def get_notification_for_discord_message_id(
     if row:
         date, message_id = row
 
-        return Notification(date=arrow.get(date), discord_message_id=message_id)
+        return Notification(date=arrow.get(date), discord_message_id=int(message_id))
 
     return None

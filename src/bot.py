@@ -1,6 +1,6 @@
 import asyncio
 
-import discord
+import nextcord
 
 from src.database import (
     add_notification_for_date,
@@ -13,7 +13,7 @@ from .config import GENERAL_CHANNEL_ID, NOTES_LINK
 from .meeting import find_next_event_and_notify_core_team
 
 
-class StrawberryDiscordClient(discord.Client):
+class StrawberryDiscordClient(nextcord.Client):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -42,9 +42,9 @@ class StrawberryDiscordClient(discord.Client):
 
             channel = client.get_channel(GENERAL_CHANNEL_ID)
 
-            assert channel
+            assert isinstance(channel, nextcord.channel.TextChannel)
 
-            embed = discord.Embed(color=5814783)
+            embed = nextcord.Embed(color=5814783)
             add_localized_times_to_embed(embed, notification.date)
 
             message = await channel.send(
