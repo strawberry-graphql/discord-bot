@@ -48,7 +48,7 @@ class StrawberryDiscordClient(nextcord.Client):
             add_localized_times_to_embed(embed, notification.date)
 
             message = await channel.send(
-                "Hey @everyone 👋 the next monthly meeting will happen"
+                "Hey @everyone 👋 the next monthly meeting will happen "
                 f"{notification.date.humanize()} 📅\n"
                 f"Realtime notes will be posted here: {NOTES_LINK}.\n\n"
                 "Feel free to add any topics you'd like to discuss in the meeting! 🍓",
