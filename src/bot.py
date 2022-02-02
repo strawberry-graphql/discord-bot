@@ -1,7 +1,7 @@
 import asyncio
 
 import nextcord
-from discord import RawReactionActionEvent
+from nextcord import RawReactionActionEvent
 
 from src.database import (
     add_notification_for_date,
