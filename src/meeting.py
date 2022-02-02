@@ -45,8 +45,9 @@ async def find_next_event_and_notify_core_team(client: nextcord.Client):
 
     if next_meeting_in_days > 25:
         print("Next meeting is more than 25 days away, not adding the scheduled event")
+        return
 
-        await add_scheduled_event(next_meeting, channel.guild)
+    await add_scheduled_event(next_meeting, channel.guild)
 
     if next_meeting_in_days > 3:
         print("Next meeting is more than 3 days away")
