@@ -67,7 +67,7 @@ def add_notification_for_date(
 
 
 def get_notification_for_discord_message_id(
-    discord_message_id: str, notification_type: str
+    discord_message_id: int, notification_type: str
 ) -> Notification | None:
     cursor.execute(
         "SELECT date, discord_message_id FROM meeting_notifications "
