@@ -14,7 +14,7 @@ from .database import (
 from .date_utils import add_localized_times_to_embed
 
 
-async def add_schedule_event(next_meeting: ics.Event, guild: nextcord.Guild):
+async def add_scheduled_event(next_meeting: ics.Event, guild: nextcord.Guild):
     scheduled_event = get_scheduled_event_for_date(next_meeting.begin.isoformat())
 
     if not scheduled_event:
@@ -38,15 +38,22 @@ async def find_next_event_and_notify_core_team(client: nextcord.Client):
         print("No next meeting found")
         return
 
-    if (next_meeting.begin - arrow.now()).days > 3:
+    next_meeting_in_days = (next_meeting.begin - arrow.now()).days
+
+    channel = client.get_channel(CORE_DEVS_CHANNEL_ID)
+    assert isinstance(channel, nextcord.channel.TextChannel)
+
+    if next_meeting_in_days > 25:
+        print("Next meeting is more than 25 days away, not adding the scheduled event")
+
+        await add_scheduled_event(next_meeting, channel.guild)
+
+    if next_meeting_in_days > 3:
         print("Next meeting is more than 3 days away")
         return
 
     event_date = next_meeting.begin.isoformat()
     notification = get_notification_for_date(event_date, "core_devs")
-
-    channel = client.get_channel(CORE_DEVS_CHANNEL_ID)
-    assert isinstance(channel, nextcord.channel.TextChannel)
 
     if not notification:
         embed = nextcord.Embed(color=5814783)
@@ -63,5 +70,3 @@ async def find_next_event_and_notify_core_team(client: nextcord.Client):
         await message.add_reaction("✅")
 
         add_notification_for_date(event_date, message.id, "core_devs")
-
-    await add_schedule_event(next_meeting, channel.guild)
