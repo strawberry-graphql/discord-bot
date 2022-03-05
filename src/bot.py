@@ -1,6 +1,10 @@
 import asyncio
+from pathlib import Path
 
 import nextcord
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
 from nextcord import RawReactionActionEvent
 
 from src.database import (
@@ -18,12 +22,43 @@ from .config import (
 )
 from .meeting import find_next_event_and_notify_core_team
 
+# If modifying these scopes, delete the file token.json.
+SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
+
 
 class StrawberryDiscordClient(nextcord.Client):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self._check_google_token()
+
         self.bg_task = self.loop.create_task(self.check_events_for_next_week())
+
+    def _check_google_token(self):
+        self.creds = None
+
+        token_path = Path("./token.json")
+        credentials_path = Path("./credentials.json")
+
+        assert credentials_path.exists()
+
+        if token_path.exists():
+            self.creds = Credentials.from_authorized_user_file(token_path, SCOPES)
+
+        if not self.creds or not self.creds.valid:
+            if self.creds and self.creds.expired and self.creds.refresh_token:
+                self.creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    credentials_path, SCOPES
+                )
+                self.creds = flow.run_local_server(port=0)
+            # Save the credentials for the next run
+
+            with token_path.open("w") as token:
+                token.write(self.creds.to_json())
+
+            print(f"Saved credentials to {token_path.name}")
 
     async def on_remove_checkmark_reaction(
         self, reaction: RawReactionActionEvent
