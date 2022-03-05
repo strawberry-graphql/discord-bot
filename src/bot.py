@@ -115,8 +115,12 @@ class StrawberryDiscordClient(nextcord.Client):
             embed = nextcord.Embed(color=5814783)
             add_localized_times_to_embed(embed, meeting_notification.date)
 
+            role = channel.guild.get_role(MEETING_WATCHERS_ROLE_ID)
+
+            assert role
+
             message = await channel.send(
-                "Hey @meeting-watchers 👋 the next monthly meeting will happen "
+                f"Hey {role.mention} 👋 the next monthly meeting will happen "
                 f"{meeting_notification.date.humanize()} 📅\n"
                 f"Realtime notes will be posted here: {NOTES_LINK}.\n\n"
                 "Feel free to add any topics you'd like to discuss in the meeting! 🍓",
