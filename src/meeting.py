@@ -66,7 +66,7 @@ async def find_next_event_and_notify_core_team(client: nextcord.Client):
 
         message = await channel.send(
             "Hey @everyone 👋 the next monthly meeting will happen "
-            f"{start.humanize()} 📅\n"
+            f"in a few days 📅\n"
             f"Make sure you update the note doc here: {NOTES_LINK}.\n\n"
             "When ready, react with ✅ to send a notification in the general channel! 🍓",
             embed=embed,

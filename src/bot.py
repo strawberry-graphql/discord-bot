@@ -121,7 +121,7 @@ class StrawberryDiscordClient(nextcord.Client):
 
             message = await channel.send(
                 f"Hey {role.mention} 👋 the next monthly meeting will happen "
-                f"{meeting_notification.date.humanize()} 📅\n"
+                "in a few days 📅\n"
                 f"Realtime notes will be posted here: {NOTES_LINK}.\n\n"
                 "Feel free to add any topics you'd like to discuss in the meeting! 🍓",
                 embed=embed,
