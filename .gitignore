@@ -5,3 +5,4 @@ __pycache__/
 database.db
 token.json
 credentials.json
+.pdm.toml
